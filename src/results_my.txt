@@ -1,0 +1,369 @@
+=== Timing Summary (cycles) ===
+Config/Quant :           43
+Store IFMAP  :         5609
+Store EX filt:         1351
+Store DW filt:         1351
+Store PR filt:         1351
+Store Biases :         1712
+---- Store sum:        11417
+Compute      :       270008
+TOTAL        :       281425
+Full test finished.
+---
+
+#########################################################################################
+#########################################################################################
+mac: This is the core Multiply-Accumulate computation. 
+It measures the time spent in the innermost loops performing the actual convolution math: 
+reading the input and filter values from memory, multiplying them, and adding them to the accumulator. 
+This is the main computational work.
+
+post: This stands for Post-Processing. 
+It measures the work done after the mac stage is complete but before the final result is written to memory. 
+This includes adding the bias, performing the requantization math (multiplying and shifting), 
+adding the final offset, and clamping the value to the valid int8 range.
+
+write: This measures the time it takes for the final step: writing the single, 
+computed pixel value back to the output tensor in main memory. 
+This represents the overhead of storing intermediate results between layers.
+#########################################################################################
+#########################################################################################
+
+Running mnv2
+.....
+[Bottleneck  0] total=77813710  IFMAP=5x5x112  EX_outC=1280
+  EX: post=2223116, mac=30272000, write=608000, sum=33103116
+  DW: post=0, mac=24476608, write=6924946, sum=31401554
+  PR: post=3222640, mac=9113600, write=972800, sum=13309040
+...
+[Bottleneck  0] total=89453742  IFMAP=80x80x8  EX_outC=48
+  EX: post=18478593, mac=35020800, write=5836800, sum=59336193
+  DW: post=0, mac=18365088, write=5150696, sum=23515784
+  PR: post=803365, mac=5555200, write=243200, sum=6601765
+...
+[Bottleneck  0] total=44737781  IFMAP=40x40x8  EX_outC=48
+  EX: post=4611662, mac=8755200, write=1459200, sum=14826062
+  DW: post=0, mac=18206784, write=5084855, sum=23291639
+  PR: post=821680, mac=5555200, write=243200, sum=6620080
+....
+[Bottleneck  0] total=24010518  IFMAP=40x40x8  EX_outC=48
+  EX: post=4662201, mac=8755200, write=1459200, sum=14876601
+  DW: post=0, mac=4555488, write=1274029, sum=5829517
+  PR: post=405200, mac=2777600, write=121600, sum=3304400
+...
+[Bottleneck  0] total=27192672  IFMAP=20x20x16  EX_outC=96
+  EX: post=2282981, mac=6835200, write=729600, sum=9847781
+  DW: post=0, mac=8953728, write=2628953, sum=11582681
+  PR: post=405410, mac=5235200, write=121600, sum=5762210
+....
+[Bottleneck  0] total=27210379  IFMAP=20x20x16  EX_outC=96
+  EX: post=2283983, mac=6835200, write=729600, sum=9848783
+  DW: post=0, mac=8953728, write=2646093, sum=11599821
+  PR: post=404975, mac=5235200, write=121600, sum=5761775
+....
+[Bottleneck  0] total=14978089  IFMAP=20x20x16  EX_outC=96
+  EX: post=2377409, mac=6835200, write=729600, sum=9942209
+  DW: post=0, mac=2242176, write=632279, sum=2874455
+  PR: post=152625, mac=1963200, write=45600, sum=2161425
+...
+[Bottleneck  0] total=11937797  IFMAP=10x10x24  EX_outC=144
+  EX: post=850392, mac=3484800, write=273600, sum=4608792
+  DW: post=0, mac=3246912, write=998333, sum=4245245
+  PR: post=153360, mac=2884800, write=45600, sum=3083760
+....
+[Bottleneck  0] total=11939884  IFMAP=10x10x24  EX_outC=144
+  EX: post=859258, mac=3484800, write=273600, sum=4617658
+  DW: post=0, mac=3246912, write=992979, sum=4239891
+  PR: post=151935, mac=2884800, write=45600, sum=3082335
+....
+[Bottleneck  0] total=11968250  IFMAP=10x10x24  EX_outC=144
+  EX: post=883550, mac=3484800, write=273600, sum=4641950
+  DW: post=0, mac=3246912, write=995298, sum=4242210
+  PR: post=153690, mac=2884800, write=45600, sum=3084090
+....
+[Bottleneck  0] total=12948334  IFMAP=10x10x24  EX_outC=144
+  EX: post=871319, mac=3484800, write=273600, sum=4629719
+  DW: post=0, mac=3246912, write=959923, sum=4206835
+  PR: post=204580, mac=3846400, write=60800, sum=4111780
+...
+[Bottleneck  0] total=18430471  IFMAP=10x10x32  EX_outC=192
+  EX: post=1181499, mac=5875200, write=364800, sum=7421499
+  DW: post=0, mac=4329216, write=1338126, sum=5667342
+  PR: post=205630, mac=5075200, write=60800, sum=5341630
+....
+[Bottleneck  0] total=18429641  IFMAP=10x10x32  EX_outC=192
+  EX: post=1202640, mac=5875200, write=364800, sum=7442640
+  DW: post=0, mac=4329216, write=1317880, sum=5647096
+  PR: post=203905, mac=5075200, write=60800, sum=5339905
+....
+[Bottleneck  0] total=11235642  IFMAP=10x10x32  EX_outC=192
+  EX: post=1256955, mac=5875200, write=364800, sum=7496955
+  DW: post=0, mac=1085952, write=315770, sum=1401722
+  PR: post=89965, mac=2220400, write=26600, sum=2336965
+...
+[Bottleneck  0] total=11147504  IFMAP=5x5x56  EX_outC=336
+  EX: post=505172, mac=4183200, write=159600, sum=4847972
+  DW: post=0, mac=1768368, write=581474, sum=2349842
+  PR: post=89890, mac=3833200, write=26600, sum=3949690
+....
+[Bottleneck  0] total=11157499  IFMAP=5x5x56  EX_outC=336
+  EX: post=517925, mac=4183200, write=159600, sum=4860725
+  DW: post=0, mac=1768368, write=579646, sum=2348014
+  PR: post=88960, mac=3833200, write=26600, sum=3948760
+....
+[Bottleneck  0] total=15120949  IFMAP=5x5x56  EX_outC=336
+  EX: post=554412, mac=4183200, write=159600, sum=4897212
+  DW: post=0, mac=1768368, write=558734, sum=2327102
+  PR: post=177035, mac=7666400, write=53200, sum=7896635
+.....
+"Event","Tag","Ticks"
+0,MUL,3804
+1,SUB,9120
+2,CONV_2D,58742
+3,DEPTHWISE_CONV_2D,38998
+4,CONV_2D,20240
+5,CONV_2D,100643
+6,DEPTHWISE_CONV_2D,29198
+7,CONV_2D,8293
+8,CONV_2D,25154
+9,DEPTHWISE_CONV_2D,28980
+10,CONV_2D,8311
+11,ADD,1051
+12,CONV_2D,25204
+13,DEPTHWISE_CONV_2D,7252
+14,CONV_2D,4167
+15,CONV_2D,14949
+16,DEPTHWISE_CONV_2D,14427
+17,CONV_2D,6568
+18,ADD,525
+19,CONV_2D,14950
+20,DEPTHWISE_CONV_2D,14443
+21,CONV_2D,6567
+22,ADD,524
+23,CONV_2D,15042
+24,DEPTHWISE_CONV_2D,3587
+25,CONV_2D,2492
+26,CONV_2D,6500
+27,DEPTHWISE_CONV_2D,5314
+28,CONV_2D,3392
+29,ADD,200
+30,CONV_2D,6509
+31,DEPTHWISE_CONV_2D,5309
+32,CONV_2D,3391
+33,ADD,198
+34,CONV_2D,6533
+35,DEPTHWISE_CONV_2D,5312
+36,CONV_2D,3392
+37,ADD,198
+38,CONV_2D,6521
+39,DEPTHWISE_CONV_2D,5276
+40,CONV_2D,4507
+41,CONV_2D,9913
+42,DEPTHWISE_CONV_2D,7092
+43,CONV_2D,5709
+44,ADD,268
+45,CONV_2D,9934
+46,DEPTHWISE_CONV_2D,7072
+47,CONV_2D,5707
+48,ADD,267
+49,CONV_2D,9987
+50,DEPTHWISE_CONV_2D,1759
+51,CONV_2D,2523
+52,CONV_2D,5901
+53,DEPTHWISE_CONV_2D,2976
+54,CONV_2D,4098
+55,ADD,118
+56,CONV_2D,5913
+57,DEPTHWISE_CONV_2D,2975
+58,CONV_2D,4097
+59,ADD,118
+60,CONV_2D,5949
+61,DEPTHWISE_CONV_2D,2955
+62,CONV_2D,8146
+63,CONV_2D,36782
+64,AVERAGE_POOL_2D,252
+65,RESHAPE,7
+66,FULLY_CONNECTED,23
+67,SOFTMAX,2
+ Counter |  Total | Starts | Average |     Raw
+---------+--------+--------+---------+--------------
+    0    |     0  |     0  |   n/a   |            0
+    1    |     0  |     0  |   n/a   |            0
+    2    |     0  |     0  |   n/a   |            0
+    3    |     0  |     0  |   n/a   |            0
+    4    |     0  |     0  |   n/a   |            0
+    5    |     0  |     0  |   n/a   |            0
+    6    |     0  |     0  |   n/a   |            0
+    7    |     0  |     0  |   n/a   |            0
+   682M (    682332810 )  cycles total
+OK   Golden tests passed
+---
+Tests for mnv2 model
+====================
+ 0: Run test 0
+ 1: Run test 1
+ s: Run special test
+ g: Run golden tests (check for expected outputs)
+ z: Run with zeros input
+ x: eXit to previous menu
+mnv2> 
+
+###############################################################################################################
+
+[Bottleneck  0] total=77314510
+  EX: setup=0, mac=30272000, store=2639116, sum=32911116
+  DW: setup=0, mac=24476608, store=6924946, sum=31401554
+  PR: setup=0, mac=9113600, store=3888240, sum=13001840
+...
+[Bottleneck  0] total=87533742
+  EX: setup=0, mac=35020800, store=22472193, sum=57492993
+  DW: setup=0, mac=18365088, store=5150696, sum=23515784
+  PR: setup=0, mac=5555200, store=969765, sum=6524965
+...
+[Bottleneck  0] total=44200181
+  EX: setup=0, mac=8755200, store=5610062, sum=14365262
+  DW: setup=0, mac=18206784, store=5084855, sum=23291639
+  PR: setup=0, mac=5555200, store=988080, sum=6543280
+....
+[Bottleneck  0] total=23511318
+  EX: setup=0, mac=8755200, store=5660601, sum=14415801
+  DW: setup=0, mac=4555488, store=1274029, sum=5829517
+  PR: setup=0, mac=2777600, store=488400, sum=3266000
+...
+[Bottleneck  0] total=26923872
+  EX: setup=0, mac=6835200, store=2782181, sum=9617381
+  DW: setup=0, mac=8953728, store=2628953, sum=11582681
+  PR: setup=0, mac=5235200, store=488610, sum=5723810
+....
+[Bottleneck  0] total=26941579
+  EX: setup=0, mac=6835200, store=2783183, sum=9618383
+  DW: setup=0, mac=8953728, store=2646093, sum=11599821
+  PR: setup=0, mac=5235200, store=488175, sum=5723375
+....
+[Bottleneck  0] total=14733289
+  EX: setup=0, mac=6835200, store=2876609, sum=9711809
+  DW: setup=0, mac=2242176, store=632279, sum=2874455
+  PR: setup=0, mac=1963200, store=183825, sum=2147025
+...
+[Bottleneck  0] total=11836997
+  EX: setup=0, mac=3484800, store=1037592, sum=4522392
+  DW: setup=0, mac=3246912, store=998333, sum=4245245
+  PR: setup=0, mac=2884800, store=184560, sum=3069360
+....
+[Bottleneck  0] total=11839084
+  EX: setup=0, mac=3484800, store=1046458, sum=4531258
+  DW: setup=0, mac=3246912, store=992979, sum=4239891
+  PR: setup=0, mac=2884800, store=183135, sum=3067935
+....
+[Bottleneck  0] total=11867450
+  EX: setup=0, mac=3484800, store=1070750, sum=4555550
+  DW: setup=0, mac=3246912, store=995298, sum=4242210
+  PR: setup=0, mac=2884800, store=184890, sum=3069690
+....
+[Bottleneck  0] total=12842734
+  EX: setup=0, mac=3484800, store=1058519, sum=4543319
+  DW: setup=0, mac=3246912, store=959923, sum=4206835
+  PR: setup=0, mac=3846400, store=246180, sum=4092580
+...
+[Bottleneck  0] total=18296071
+  EX: setup=0, mac=5875200, store=1431099, sum=7306299
+  DW: setup=0, mac=4329216, store=1338126, sum=5667342
+  PR: setup=0, mac=5075200, store=247230, sum=5322430
+....
+[Bottleneck  0] total=18295241
+  EX: setup=0, mac=5875200, store=1452240, sum=7327440
+  DW: setup=0, mac=4329216, store=1317880, sum=5647096
+  PR: setup=0, mac=5075200, store=245505, sum=5320705
+....
+[Bottleneck  0] total=11112042
+  EX: setup=0, mac=5875200, store=1506555, sum=7381755
+  DW: setup=0, mac=1085952, store=315770, sum=1401722
+  PR: setup=0, mac=2220400, store=108165, sum=2328565
+...
+[Bottleneck  0] total=11088704
+  EX: setup=0, mac=4183200, store=614372, sum=4797572
+  DW: setup=0, mac=1768368, store=581474, sum=2349842
+  PR: setup=0, mac=3833200, store=108090, sum=3941290
+....
+[Bottleneck  0] total=11098699
+  EX: setup=0, mac=4183200, store=627125, sum=4810325
+  DW: setup=0, mac=1768368, store=579646, sum=2348014
+  PR: setup=0, mac=3833200, store=107160, sum=3940360
+....
+[Bottleneck  0] total=15053749
+  EX: setup=0, mac=4183200, store=663612, sum=4846812
+  DW: setup=0, mac=1768368, store=558734, sum=2327102
+  PR: setup=0, mac=7666400, store=213435, sum=7879835
+.....
+"Event","Tag","Ticks"
+0,MUL,3804
+1,SUB,9120
+2,CONV_2D,58542
+3,DEPTHWISE_CONV_2D,38999
+4,CONV_2D,17831
+5,CONV_2D,86242
+6,DEPTHWISE_CONV_2D,29199
+7,CONV_2D,7684
+8,CONV_2D,21554
+9,DEPTHWISE_CONV_2D,28979
+10,CONV_2D,7703
+11,ADD,1051
+12,CONV_2D,21604
+13,DEPTHWISE_CONV_2D,7252
+14,CONV_2D,3858
+15,CONV_2D,13149
+16,DEPTHWISE_CONV_2D,14427
+17,CONV_2D,6259
+18,ADD,525
+19,CONV_2D,13150
+20,DEPTHWISE_CONV_2D,14444
+21,CONV_2D,6258
+22,ADD,525
+23,CONV_2D,13242
+24,DEPTHWISE_CONV_2D,3587
+25,CONV_2D,2370
+26,CONV_2D,5826
+27,DEPTHWISE_CONV_2D,5314
+28,CONV_2D,3271
+29,ADD,200
+30,CONV_2D,5834
+31,DEPTHWISE_CONV_2D,5309
+32,CONV_2D,3269
+33,ADD,199
+34,CONV_2D,5858
+35,DEPTHWISE_CONV_2D,5311
+36,CONV_2D,3272
+37,ADD,198
+38,CONV_2D,5845
+39,DEPTHWISE_CONV_2D,5276
+40,CONV_2D,4348
+41,CONV_2D,9013
+42,DEPTHWISE_CONV_2D,7092
+43,CONV_2D,5550
+44,ADD,268
+45,CONV_2D,9034
+46,DEPTHWISE_CONV_2D,7072
+47,CONV_2D,5548
+48,ADD,267
+49,CONV_2D,9087
+50,DEPTHWISE_CONV_2D,1759
+51,CONV_2D,2449
+52,CONV_2D,5507
+53,DEPTHWISE_CONV_2D,2977
+54,CONV_2D,4023
+55,ADD,118
+56,CONV_2D,5520
+57,DEPTHWISE_CONV_2D,2975
+58,CONV_2D,4022
+59,ADD,118
+60,CONV_2D,5556
+61,DEPTHWISE_CONV_2D,2954
+62,CONV_2D,8007
+63,CONV_2D,35281
+64,AVERAGE_POOL_2D,252
+65,RESHAPE,8
+66,FULLY_CONNECTED,23
+67,SOFTMAX,3
+Perf counters not enabled.
+   640M (    640183073 )  cycles total
+OK   Golden tests passed
